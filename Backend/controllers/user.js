@@ -26,12 +26,21 @@ export const signUp = async (req, res) => {
     });
 
     // Fire inngest event
-    await inngest.send({
+    // await inngest.send({
+    //     name: "user/signup",
+    //     date:{
+    //         email: email.toLowerCase(),
+    //     }
+    // })
+
+    try {
+      await inngest.send({
         name: "user/signup",
-        date:{
-            email: email.toLowerCase(),
-        }
-    })
+        data: { email: email.toLowerCase() }
+      });
+    } catch (err) {
+      console.error("Inngest event failed:", err);
+    }
     // Generate JWT token
     const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '1h' });
 

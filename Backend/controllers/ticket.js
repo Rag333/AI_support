@@ -20,15 +20,29 @@ export const createTicket = async (req, res) => {
       createdBy: req.user._id.toString(),
     });
 
-    await inngest.send({
-      name: "ticket/created",
-      data: {
-        ticketId: newTicket._id.toString(),
-        title: newTicket.title,
-        description: newTicket.description,
-        createdBy: req.user._id.toString(),
-      },
-    });
+    // await inngest.send({
+    //   name: "ticket/created",
+    //   data: {
+    //     ticketId: newTicket._id.toString(),
+    //     title: newTicket.title,
+    //     description: newTicket.description,
+    //     createdBy: req.user._id.toString(),
+    //   },
+    // });
+    try {
+      await inngest.send({
+        name: "ticket/created",
+        data: {
+          ticketId: newTicket._id.toString(),
+          title: newTicket.title,
+          description: newTicket.description,
+          createdBy: req.user._id.toString(),
+        },
+      });
+    } catch (err) {
+      console.error("Inngest event failed:", err.message);
+    }
+
 
     return res.status(201).json({ message: "Ticket created successfully", ticket: newTicket });
   } catch (error) {
