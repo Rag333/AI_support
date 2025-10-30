@@ -1,6 +1,6 @@
 import { Role, Priority, TicketStatus } from '../types.js';
 
-const API_BASE_URL = 'https://ai-support-2jpc.onrender.com' ;
+const API_BASE_URL = import.meta.env.VITE_API_URL;
 
 const getAuthToken = () => {
   return localStorage.getItem('authToken');
